@@ -5,4 +5,23 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="DSharpPlus" Version="3.2.3" />
+      <PackageReference Include="DSharpPlus.CommandsNext" Version="3.2.3" />
+      <PackageReference Include="DSharpPlus.Interactivity" Version="3.2.3" />
+      <PackageReference Include="Mapster" Version="6.5.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0-rc.2.20475.6">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.0-rc.2.20475.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="config.json" />
+      <EmbeddedResource Include="config.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+
 </Project>

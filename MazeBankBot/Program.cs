@@ -1,4 +1,5 @@
 ﻿using System;
+using MazeBankBot.App;
 
 namespace MazeBankBot
 {
@@ -6,7 +7,7 @@ namespace MazeBankBot
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Bot.Make().Start().ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 }
