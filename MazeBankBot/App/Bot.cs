@@ -36,6 +36,7 @@ namespace MazeBankBot.App
 
             _commandsNextModule.RegisterCommands<TestController>();
             _commandsNextModule.RegisterCommands<PollController>();
+            _commandsNextModule.RegisterCommands<RoleController>();
 
             _commandsNextModule.SetHelpFormatter<MazeHelpFormatter>();
 
