@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -7,6 +8,7 @@ using MazeBankBot.App.Handlers;
 namespace MazeBankBot.App.Controllers
 {
     [Group("role")]
+    [RequirePermissions(Permissions.Administrator)]
     public class RoleController
     {
         private readonly RoleHandler _roleHandler;
