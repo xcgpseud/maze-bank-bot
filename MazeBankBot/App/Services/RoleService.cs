@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
+using MazeBankBot.App.Helpers;
 
 namespace MazeBankBot.App.Services
 {
@@ -30,18 +31,29 @@ namespace MazeBankBot.App.Services
 
         public async Task ChooseRole(CommandContext ctx, DiscordMember member, List<DiscordRole> roles)
         {
+            // Get an array of word-representative numbers so we can use the emojis for the numbers
+            var range = Enumerable.Range(1, roles.Count);
+
+            var numWords = Enumerable.Range(1, roles.Count)
+                .Select(num =>
+                    NumberRepresentationHelper.NumberToSingleWordArray(num)
+                        .Select(x => $":{x}:")
+                ).ToArray();
+
+            var desc = "Respond with the number which corresponds with the role you would like to grant.\n\n";
+
+            for (var i = 0; i < roles.Count; i++)
+            {
+                var emojis = String.Join(" ", numWords[i]);
+                desc += $"{emojis}: **{roles[i].Name}**\n";
+            }
+
             var embedBuilder = new DiscordEmbedBuilder
             {
                 Color = DiscordColor.Gold,
                 Title = "Choose a role",
-                Description = "Respond with the number which corresponds with the role you would like to grant.",
+                Description = desc,
             };
-
-            var i = 0;
-            roles.ForEach(role => embedBuilder.AddField(
-                $"{i++.ToString()}...",
-                $"**{role.Name}**"
-            ));
 
             await ctx.RespondAsync(embed: embedBuilder.Build());
 
@@ -57,10 +69,10 @@ namespace MazeBankBot.App.Services
                 try
                 {
                     var num = int.Parse(response.Message.Content);
-                    
-                    if (num < roles.Count)
+
+                    if (num <= roles.Count)
                     {
-                        var role = roles.ElementAt(num);
+                        var role = roles.ElementAt(num - 1);
                         await GiveRole(ctx, member, role);
                     }
                     else

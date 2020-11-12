@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeBankBot", "MazeBankBot\MazeBankBot.csproj", "{A52BE99F-0849-4B69-82D0-7C04222C288D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{9E698008-DB4B-4565-8932-B42BBBB3C00F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{A52BE99F-0849-4B69-82D0-7C04222C288D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A52BE99F-0849-4B69-82D0-7C04222C288D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A52BE99F-0849-4B69-82D0-7C04222C288D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E698008-DB4B-4565-8932-B42BBBB3C00F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E698008-DB4B-4565-8932-B42BBBB3C00F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E698008-DB4B-4565-8932-B42BBBB3C00F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E698008-DB4B-4565-8932-B42BBBB3C00F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
