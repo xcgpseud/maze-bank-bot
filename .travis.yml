@@ -1,8 +1,14 @@
 language: csharp
 solution: MazeBankBot.sln
-before_install:
-        - sudo apt install nunit-console
-before_script:
-        - nuget restore MazeBankBot.sln
-after_script:
+
+os: linux
+dist:
+        - ubuntu
+
+mono: none
+dotnet: 3.1
+
+install:
+        - dotnet restore MazeBankBot.sln
+script:
         - dotnet test
