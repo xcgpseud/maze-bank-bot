@@ -3,7 +3,7 @@ solution: MazeBankBot.sln
 
 os: linux
 dist:
-        - ubuntu
+        - xenial
 
 mono: none
 dotnet: 3.1
