@@ -45,5 +45,27 @@ namespace UnitTests.Helpers
                 Assert.AreEqual(x.Value, result);
             }
         }
+
+        [Test]
+        public void Test_NumberToSingleWordArray_DiscordEmojis()
+        {
+            var cases = new Dictionary<int, string>
+            {
+                {1234, ":one: :two: :three: :four:"},
+                {100, ":one: :zero: :zero:"},
+            };
+
+            foreach (var x in cases)
+            {
+                var result = string.Join(
+                    " ",
+                    NumberRepresentationHelper.NumberToSingleWordArray(x.Key)
+                        .Select(word => $":{word.Trim()}:")
+                        .ToList()
+                );
+
+                Assert.AreEqual(x.Value, result);
+            }
+        }
     }
 }
