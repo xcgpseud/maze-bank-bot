@@ -9,7 +9,7 @@ namespace MazeBankBot.App.Controllers
 {
     [Group("role")]
     [RequirePermissions(Permissions.Administrator)]
-    public class RoleController
+    public class RoleController : BaseCommandModule
     {
         private readonly RoleHandler _roleHandler;
 
@@ -20,6 +20,14 @@ namespace MazeBankBot.App.Controllers
         {
             await Executor.Execute(async () =>
                 await _roleHandler.GiveRole(ctx, member, roleName)
+            );
+        }
+
+        [Command("request")]
+        public async Task RequestRole(CommandContext ctx, string roleName)
+        {
+            await Executor.Execute(async () =>
+                await _roleHandler.RequestRole(ctx, roleName)
             );
         }
     }

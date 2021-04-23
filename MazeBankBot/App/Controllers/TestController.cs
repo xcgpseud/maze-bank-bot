@@ -6,7 +6,7 @@ using MazeBankBot.App.Handlers;
 namespace MazeBankBot.App.Controllers
 {
     [Group("test")]
-    public class TestController
+    public class TestController : BaseCommandModule
     {
         private readonly TestHandler _testHandler;
 

@@ -6,6 +6,7 @@ namespace MazeBankBot.Database
     public class SqliteContext : DbContext
     {
         public DbSet<TestEntity> Tests { get; set; }
+        public DbSet<RoleRequestEntity> RoleRequests { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

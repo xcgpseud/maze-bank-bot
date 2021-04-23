@@ -7,14 +7,14 @@ namespace MazeBankBot.Config
     public class Config
     {
         private const string ConfigFile = "config.json";
-        private ConfigModel _configModel;
+        private static ConfigModel _configModel;
 
         public static Config Make()
         {
             return new Config();
         }
 
-        public ConfigModel Get()
+        public static ConfigModel Get()
         {
             if (_configModel == null)
             {
@@ -24,7 +24,7 @@ namespace MazeBankBot.Config
             return _configModel;
         }
 
-        private void SetConfigModel()
+        private static void SetConfigModel()
         {
             using var file = File.OpenText(ConfigFile);
             using var reader = new JsonTextReader(file);

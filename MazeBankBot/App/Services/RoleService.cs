@@ -5,16 +5,49 @@ using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
+using DSharpPlus.Interactivity.Extensions;
+using Mapster;
+using MazeBankBot.App.DataModels;
 using MazeBankBot.App.Helpers;
+using MazeBankBot.Database.Repositories;
 
 namespace MazeBankBot.App.Services
 {
     public class RoleService
     {
+        private readonly RoleRequestRepository _roleRequestRepository;
+
+        public RoleService() => _roleRequestRepository = new RoleRequestRepository();
+
+        public async Task<RoleRequestModel> CreateRoleRequest(ulong roleId, ulong userId)
+        {
+            var entity = await _roleRequestRepository.Create(roleId, userId);
+
+            return entity.Adapt<RoleRequestModel>();
+        }
+
+        public async Task<RoleRequestModel> ApproveRoleRequest(CommandContext ctx, int id)
+        {
+            var entity = await _roleRequestRepository.ApproveRoleRequest(id);
+            var user = ctx.Guild.Members.FirstOrDefault(x =>
+                x.Value.Id == entity.UserId
+            ).Value;
+            var role = ctx.Guild.Roles.FirstOrDefault(x =>
+                x.Value.Id == entity.RoleId
+            ).Value;
+
+            if (user != null && role != null)
+            {
+                await GiveRole(ctx, user, role);
+            }
+
+            return entity.Adapt<RoleRequestModel>();
+        }
+
         public List<DiscordRole> SearchForRoles(DiscordGuild guild, string search)
         {
             return guild
-                .Roles
+                .Roles.Select(x => x.Value)
                 .ToList()
                 .FindAll(x => x
                     .Name
@@ -25,11 +58,11 @@ namespace MazeBankBot.App.Services
 
         public async Task GiveRole(CommandContext ctx, DiscordMember member, DiscordRole role)
         {
-            await ctx.Guild.GrantRoleAsync(member, role);
+            await member.GrantRoleAsync(role);
             await ctx.RespondAsync($"The user {member.Mention} has been granted the role: **{role.Name}**");
         }
 
-        public async Task ChooseRole(CommandContext ctx, DiscordMember member, List<DiscordRole> roles)
+        public async Task<DiscordRole> ChooseRole(CommandContext ctx, DiscordMember member, List<DiscordRole> roles)
         {
             // Get an array of word-representative numbers so we can use the emojis for the numbers
             var range = Enumerable.Range(1, roles.Count);
@@ -58,22 +91,23 @@ namespace MazeBankBot.App.Services
             await ctx.RespondAsync(embed: embedBuilder.Build());
 
             // Handle the response, they have 1 minute to reply
-            var response = await ctx.Client.GetInteractivityModule().WaitForMessageAsync(
+            var response = await ctx.Client.GetInteractivity().WaitForMessageAsync(
                 msg => msg.Author.Id == ctx.Message.Author.Id, // Make sure it's the same person
                 TimeSpan.FromMinutes(1)
             );
 
-            if (response != null)
+            if (!response.TimedOut)
             {
                 // Parse their response as an integer
                 try
                 {
-                    var num = int.Parse(response.Message.Content);
+                    var num = int.Parse(response.Result.Content);
 
                     if (num <= roles.Count)
                     {
                         var role = roles.ElementAt(num - 1);
-                        await GiveRole(ctx, member, role);
+                        return role;
+                        // await GiveRole(ctx, member, role);
                     }
                     else
                     {
@@ -85,6 +119,8 @@ namespace MazeBankBot.App.Services
                     await ctx.RespondAsync("You did not provide a number. Please start again.");
                 }
             }
+
+            return null;
         }
     }
 }
